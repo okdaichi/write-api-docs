@@ -1,103 +1,59 @@
 # API
 
-All endpoints for this API are documented in this file.
-
-The format is based on the API.md Convention and is intended to be read and edited as plain
-Markdown.
+Auth: Required
 
 ## Endpoints
 
-### GET /v1/items
+### GET /resources
 
-Description: List items
+Description: List all resources
 
-Request:
-
-- limit: integer, optional
-- cursor: string, optional
+Query:
+- limit
+- offset
 
 Response:
-
 - 200 OK
-- items: array
-- next_cursor: string, optional
 
----
+### POST /resources
 
-### POST /v1/items
+Description: Create a new resource
 
-Description: Create an item
+Headers:
+- X-Client-Id
 
-Request:
-
-- name: string, required, example "Example item"
-- description: string, optional
+Body:
+```json
+{
+  "name": "example-resource",
+  "metadata": {
+    "tags": ["initial", "demo"]
+  }
+}
+```
 
 Response:
-
 - 201 Created
-- id: string
-- name: string
 
-Errors:
+### GET /resources/{id}
 
-- 400 Bad Request
-- 401 Unauthorized
-
----
-
-### GET /v1/items/{item_id}
-
-Description: Get an item
-
-Request:
-
-- item_id: string, required, example "item_123"
+Description: Get resource details
 
 Response:
-
 - 200 OK
-- id: string
-- name: string
-- description: string, optional
 
-Errors:
+### DELETE /resources/{id}
 
-- 404 Not Found
-
----
-
-### PATCH /v1/items/{item_id}
-
-Description: Update an item
-
-Request:
-
-- item_id: string, required, example "item_123"
-- name: string, optional
-- description: string, optional
+Description: Delete a resource
 
 Response:
-
-- 200 OK
-- id: string
-- name: string
-- description: string, optional
-
-Notes:
-
-- Omitted fields are not changed.
-
----
-
-### DELETE /v1/items/{item_id}
-
-Description: Delete an item
-
-Request:
-
-- item_id: string, required, example "item_123"
-
-Response:
-
 - 204 No Content
+
+### GET /public/status
+
+Description: System status check
+
+Auth: None
+
+Response:
+- 200 OK

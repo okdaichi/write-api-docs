@@ -1,97 +1,102 @@
 import { generateDenoTests, parseApiMd } from "./api-md.ts";
 
 function assertEquals(actual: unknown, expected: unknown): void {
-  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+  const a = JSON.stringify(actual, Object.keys(actual as any).sort());
+  const e = JSON.stringify(expected, Object.keys(expected as any).sort());
+  if (a !== e) {
     throw new Error(
-      `Expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`,
+      `Expected ${e}, got ${a}`,
     );
   }
 }
 
-const markdown = `# API
+const markdown = `# API Specification
+
+Auth: Required
 
 ## Endpoints
 
-### GET /v1/items
+### GET /v1/resources
 
-Description: List items
+Description: List resources
 
-Request:
-
-- limit: integer, optional
+Query:
+- limit
+- offset
 
 Response:
-
 - 200 OK
 
----
+### POST /v1/resources
 
-### POST /v1/items
+Description: Create a resource
 
-Description: Create an item
+Headers:
+- X-Client-Id
 
-Request:
-
-- name: string, required, example "Example item"
-- description: string, optional
+Body:
+\`\`\`json
+{
+  "name": "example-resource"
+}
+\`\`\`
 
 Response:
-
 - 201 Created
 
----
+### DELETE /v1/resources/{id}
 
-### DELETE /v1/items/{item_id}
+Description: Delete a resource
 
-Description: Delete an item
-
-Request:
-
-- item_id: string, required, example "item_123"
+Auth: None
 
 Response:
-
 - 204 No Content
 `;
 
-Deno.test("parseApiMd returns endpoints from API.md headings", () => {
+Deno.test("parseApiMd returns endpoints with new format", () => {
   const endpoints = parseApiMd(markdown);
 
   assertEquals(endpoints.length, 3);
   assertEquals(endpoints[0], {
     method: "GET",
-    path: "/v1/items",
-    description: "List items",
-    request: ["limit: integer, optional"],
+    path: "/v1/resources",
+    description: "List resources",
+    auth: "Required",
+    query: ["limit", "offset"],
+    headers: [],
     response: ["200 OK"],
-    errors: [],
-    notes: [],
   });
+
+  assertEquals(endpoints[1].headers, ["X-Client-Id"]);
+  assertEquals(endpoints[1].body?.trim(), '{\n  "name": "example-resource"\n}');
+
+  assertEquals(endpoints[2].auth, "None");
 });
 
-Deno.test("generateDenoTests creates status checks with inline examples", () => {
+Deno.test("generateDenoTests creates tests with tokens and query params", () => {
   const output = generateDenoTests(parseApiMd(markdown));
 
-  assertEquals(output.includes('Deno.test("List items"'), true);
-  assertEquals(output.includes("assertEquals(response.status, 200);"), true);
-  assertEquals(output.includes('Deno.test("Create an item"'), true);
-  assertEquals(output.includes("assertEquals(response.status, 201);"), true);
-  assertEquals(output.includes('"name": "Example item"'), true);
-  assertEquals(output.includes('method: "DELETE"'), true);
-  assertEquals(output.includes('"item_id": "item_123"'), true);
-  assertEquals(output.includes("${params.item_id}"), true);
+  assertEquals(output.includes('Deno.test("List resources"'), true);
+  assertEquals(output.includes("const token = Deno.env.get(\"TOKEN\") ?? \"\";"), true);
+  assertEquals(output.includes('Authorization": `Bearer ${token}`'), true);
+  assertEquals(output.includes("?limit=${params.limit}&offset=${params.offset}"), true);
+  
+  assertEquals(output.includes('const basePath = Deno.env.get("API_BASE_PATH") ?? "";'), true);
+  assertEquals(output.includes('fetch(`${baseUrl}${basePath}/v1/resources?limit=${params.limit}&offset=${params.offset}`'), true);
+  
+  assertEquals(output.includes('Deno.test("Create a resource"'), true);
+  assertEquals(output.includes('"X-Client-Id": `${params["X-Client-Id"] ?? "TODO"}`'), true);
+  // The generated code for the body might have different indentation or spacing.
+  assertEquals(output.includes('body: JSON.stringify({'), true);
+  assertEquals(output.includes('"name": "example-resource"'), true);
+
+  assertEquals(output.includes('Deno.test("Delete a resource"'), true);
 });
 
-Deno.test("generateDenoTests allows external examples to override inline examples", () => {
-  const output = generateDenoTests(parseApiMd(markdown), {
-    params: {
-      item_id: "item_override",
-    },
-    request: {
-      name: "Override item",
-    },
-  });
-
-  assertEquals(output.includes('"name": "Override item"'), true);
-  assertEquals(output.includes('"item_id": "item_override"'), true);
+Deno.test("generateDenoTests excludes Authorization if Auth: None", () => {
+    const endpoints = parseApiMd(markdown);
+    const deleteEndpoint = endpoints.find(e => e.method === "DELETE");
+    const output = generateDenoTests([deleteEndpoint!]);
+    assertEquals(output.includes('Authorization'), false);
 });

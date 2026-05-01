@@ -27,7 +27,6 @@ write down:
 - What each endpoint does
 - What request data it expects
 - What responses it returns
-- What changed over time
 
 ## Philosophy
 
@@ -37,15 +36,11 @@ write down:
 - **Minimal structure:** Use ordinary Markdown headings and lists.
 - **No required tooling:** A valid API.md file should be useful in any text editor, code review, or
   repository browser.
-- **Integrity over generation:** Prioritize keeping implementation and documentation aligned over
-  generating application types.
-- **Tests over types:** If tooling is added, prefer tools that check code and docs against each
-  other over tools that make API.md the source for generated types.
-- **Examples over rules:** Prefer clear examples to a large specification.
 
-## Example
+## Documentation
 
-See [API.md](API.md) for the canonical example of this convention.
+- [API.md](API.md) - A canonical example of the convention.
+- [CONVENTION.md](CONVENTION.md) - The detailed format specification and execution model.
 
 ## Optional Tooling
 
@@ -56,20 +51,13 @@ API.md.
 deno task generate:tests
 ```
 
-The generator reads [API.md](API.md), including small inline examples such as `example "item_123"`
-on request fields. The generated tests are intentionally basic. They check documented endpoints and
-expected status codes so teams can start verifying that the implementation and API.md stay aligned.
-
-Projects that prefer to keep example values outside API.md can pass an optional JSON file:
-
-```sh
-deno run --allow-read --allow-write src/generate-tests.ts API.md generated/api.test.ts examples/api.examples.json
-```
+The generator reads [API.md](API.md) and extracts parameters, headers, and JSON bodies to generate
+executable tests.
 
 Run generated tests against a service with:
 
 ```sh
-API_BASE_URL=http://localhost:3000 deno test --allow-env --allow-net generated/api.test.ts
+API_BASE_URL=https://api.example.com TOKEN=secret deno test --allow-env --allow-net generated/api.test.ts
 ```
 
 This tooling is optional. API.md remains useful as plain Markdown without running any command.
@@ -81,26 +69,16 @@ This tooling is optional. API.md remains useful as plain Markdown without runnin
 - Early-stage products
 - Codebases where docs are reviewed with implementation changes
 - Libraries or services with a small public HTTP surface
-- Teams that want useful docs with a low adoption cost
 
 ## Non-Goals
 
 - API.md is not a full schema definition language.
 - API.md does not require validators, generators, or custom parsers.
-- API.md is not designed around type generation.
 - API.md does not try to describe every possible API style.
-- API.md does not guarantee backward compatibility while the convention is experimental.
 
 ## Status
 
 Early draft and experimental.
-
-The convention is intentionally small. Feedback should focus on whether the format is clear, useful,
-and easy to adopt.
-
-## Contributing
-
-Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes.
 
 ## License
 
