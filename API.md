@@ -2,7 +2,8 @@
 
 All endpoints for this API are documented in this file.
 
-The format is based on the API.md Convention and is intended to be read and edited as plain Markdown.
+The format is based on the API.md Convention and is intended to be read and edited as plain
+Markdown.
 
 ## Endpoints
 
@@ -29,7 +30,7 @@ Description: Create an item
 
 Request:
 
-- name: string, required
+- name: string, required, example "Example item"
 - description: string, optional
 
 Response:
@@ -51,7 +52,7 @@ Description: Get an item
 
 Request:
 
-- item_id: string, required
+- item_id: string, required, example "item_123"
 
 Response:
 
@@ -72,7 +73,7 @@ Description: Update an item
 
 Request:
 
-- item_id: string, required
+- item_id: string, required, example "item_123"
 - name: string, optional
 - description: string, optional
 
@@ -95,7 +96,7 @@ Description: Delete an item
 
 Request:
 
-- item_id: string, required
+- item_id: string, required, example "item_123"
 
 Response:
 

@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "check": "deno fmt --check && deno lint && deno test src",
+    "fmt": "deno fmt",
+    "generate:tests": "deno run --allow-read --allow-write src/generate-tests.ts API.md generated/api.test.ts",
+    "test": "deno test src"
+  },
+  "fmt": {
+    "lineWidth": 100,
+    "semiColons": true,
+    "singleQuote": false
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}

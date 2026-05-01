@@ -2,7 +2,8 @@
 
 ## Our Pledge
 
-We pledge to make participation in this project a respectful and harassment-free experience for everyone.
+We pledge to make participation in this project a respectful and harassment-free experience for
+everyone.
 
 ## Expected Behavior
 
@@ -23,12 +24,15 @@ Unacceptable behavior includes:
 
 ## Enforcement
 
-Maintainers may remove comments, close issues, reject contributions, or ban participants who violate this code of conduct.
+Maintainers may remove comments, close issues, reject contributions, or ban participants who violate
+this code of conduct.
 
-Enforcement decisions should be proportional, documented when appropriate, and focused on protecting the project community.
+Enforcement decisions should be proportional, documented when appropriate, and focused on protecting
+the project community.
 
 ## Reporting
 
-To report a concern, contact the maintainers through a private channel listed by the project, or open a confidential report if the hosting platform supports it.
+To report a concern, contact the maintainers through a private channel listed by the project, or
+open a confidential report if the hosting platform supports it.
 
 Maintainers will review reports as promptly as possible.
