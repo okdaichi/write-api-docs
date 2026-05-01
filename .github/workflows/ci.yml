@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate repository structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            "README.md"
+            "API.md"
+            "CHANGELOG.md"
+            "CONTRIBUTING.md"
+            "LICENSE"
+            "CODE_OF_CONDUCT.md"
+          )
+
+          for file in "${required_files[@]}"; do
+            test -s "$file"
+          done
+
+      - name: Check example API structure
+        run: |
+          set -euo pipefail
+
+          grep -q '^# API$' API.md
+          grep -q '^## Endpoints$' API.md
+          grep -Eq '^### (GET|POST|PUT|PATCH|DELETE) /' API.md
+
+      - name: Check changelog structure
+        run: |
+          set -euo pipefail
+
+          grep -q '^## \[Unreleased\]$' CHANGELOG.md
+          grep -q '^## \[0.1.0\] - 2026-05-01$' CHANGELOG.md
