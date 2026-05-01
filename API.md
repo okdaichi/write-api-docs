@@ -9,10 +9,12 @@ Auth: Required
 Description: List all resources
 
 Query:
+
 - limit
 - offset
 
 Response:
+
 - 200 OK
 
 ### POST /resources
@@ -20,9 +22,11 @@ Response:
 Description: Create a new resource
 
 Headers:
+
 - X-Client-Id
 
 Body:
+
 ```json
 {
   "name": "example-resource",
@@ -33,6 +37,7 @@ Body:
 ```
 
 Response:
+
 - 201 Created
 
 ### GET /resources/{id}
@@ -40,6 +45,7 @@ Response:
 Description: Get resource details
 
 Response:
+
 - 200 OK
 
 ### DELETE /resources/{id}
@@ -47,6 +53,7 @@ Response:
 Description: Delete a resource
 
 Response:
+
 - 204 No Content
 
 ### GET /public/status
@@ -56,4 +63,5 @@ Description: System status check
 Auth: None
 
 Response:
+
 - 200 OK

@@ -78,27 +78,32 @@ Deno.test("generateDenoTests creates tests with tokens and query params", () => 
   const output = generateDenoTests(parseApiMd(markdown));
 
   assertEquals(output.includes('Deno.test("List resources"'), true);
-  assertEquals(output.includes("const token = Deno.env.get(\"TOKEN\") ?? \"\";"), true);
+  assertEquals(output.includes('const token = Deno.env.get("TOKEN") ?? "";'), true);
   assertEquals(output.includes('Authorization": `Bearer ${token}`'), true);
   assertEquals(output.includes("?limit=${params.limit}&offset=${params.offset}"), true);
-  
+
   assertEquals(output.includes('const basePath = Deno.env.get("API_BASE_PATH") ?? "";'), true);
-  assertEquals(output.includes('fetch(`${baseUrl}${basePath}/v1/resources?limit=${params.limit}&offset=${params.offset}`'), true);
-  
+  assertEquals(
+    output.includes(
+      "fetch(`${baseUrl}${basePath}/v1/resources?limit=${params.limit}&offset=${params.offset}`",
+    ),
+    true,
+  );
+
   assertEquals(output.includes('Deno.test("Create a resource"'), true);
   assertEquals(output.includes('"X-Client-Id": `${params["X-Client-Id"] ?? "TODO"}`'), true);
   // The generated code for the body might have different indentation or spacing.
-  assertEquals(output.includes('body: JSON.stringify({'), true);
+  assertEquals(output.includes("body: JSON.stringify({"), true);
   assertEquals(output.includes('"name": "example-resource"'), true);
 
   assertEquals(output.includes('Deno.test("Delete a resource"'), true);
 });
 
 Deno.test("generateDenoTests excludes Authorization if Auth: None", () => {
-    const endpoints = parseApiMd(markdown);
-    const deleteEndpoint = endpoints.find(e => e.method === "DELETE");
-    const output = generateDenoTests([deleteEndpoint!]);
-    assertEquals(output.includes('Authorization'), false);
+  const endpoints = parseApiMd(markdown);
+  const deleteEndpoint = endpoints.find((e) => e.method === "DELETE");
+  const output = generateDenoTests([deleteEndpoint!]);
+  assertEquals(output.includes("Authorization"), false);
 });
 
 Deno.test("stringifyApiMd generates valid markdown", () => {
@@ -110,12 +115,12 @@ Deno.test("stringifyApiMd generates valid markdown", () => {
       auth: "None",
       query: ["param1"],
       headers: [],
-      response: ["200 OK"]
-    }
+      response: ["200 OK"],
+    },
   ];
-  
+
   const output = stringifyApiMd(endpoints, "Required");
-  
+
   assertEquals(output.includes("### GET /test"), true);
   assertEquals(output.includes("Description: Test endpoint"), true);
   assertEquals(output.includes("Auth: None"), true);

@@ -131,7 +131,10 @@ export function parseApiMd(markdown: string): ApiEndpoint[] {
 /**
  * Converts an array of ApiEndpoint objects back into the API.md Markdown format.
  */
-export function stringifyApiMd(endpoints: ApiEndpoint[], globalAuth: "Required" | "None" = "Required"): string {
+export function stringifyApiMd(
+  endpoints: ApiEndpoint[],
+  globalAuth: "Required" | "None" = "Required",
+): string {
   const lines: string[] = ["# API", ""];
 
   if (globalAuth !== "Required") {
@@ -200,8 +203,8 @@ export function generateDenoTests(
     const urlPath = pathToTemplate(endpoint.path);
     const init = requestInit(endpoint);
     const params = pathParams(endpoint.path);
-    const query = endpoint.query.map(q => q.split(':')[0].trim());
-    
+    const query = endpoint.query.map((q) => q.split(":")[0].trim());
+
     const paramsBlock = (params.length === 0 && query.length === 0) ? "" : `  const params = {
 ${
       [...params, ...query].map((param) =>
@@ -212,7 +215,7 @@ ${
 
 `;
 
-    const queryString = query.length === 0 ? "" : "?" + query.map(q => {
+    const queryString = query.length === 0 ? "" : "?" + query.map((q) => {
       const access = q.includes("-") ? `["${q}"]` : `.${q}`;
       return `${q}=\${params${access}}`;
     }).join("&");
@@ -273,7 +276,9 @@ function requestInit(endpoint: ApiEndpoint): string {
     parts.push(`method: ${JSON.stringify(endpoint.method)}`);
   }
   if (hasHeaders) {
-    const headerLines = Object.entries(headers).map(([k, v]) => `      ${JSON.stringify(k)}: \`${v}\``);
+    const headerLines = Object.entries(headers).map(([k, v]) =>
+      `      ${JSON.stringify(k)}: \`${v}\``
+    );
     parts.push(`headers: {
 ${headerLines.join(",\n")}
     }`);

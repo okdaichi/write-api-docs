@@ -4,10 +4,10 @@ This document defines the specification and execution model for the API.md forma
 
 ## Core Principles
 
-* Human-readable first
-* Parsable with simple rules
-* No schema validation
-* No code generation assumptions
+- Human-readable first
+- Parsable with simple rules
+- No schema validation
+- No code generation assumptions
 
 ## Endpoint Definition
 
@@ -23,27 +23,28 @@ Example:
 
 Allowed values only:
 
-* Auth: Required
-* Auth: None
+- Auth: Required
+- Auth: None
 
 Rules:
 
-* No token formats (Bearer, OAuth, etc.)
-* No auth flows
-* Tools inject credentials externally
+- No token formats (Bearer, OAuth, etc.)
+- No auth flows
+- Tools inject credentials externally
 
 ## Request Structure
 
 Use the following sections:
 
-* Query
-* Headers
-* Body
+- Query
+- Headers
+- Body
 
 ### Query
 
 ```markdown
 Query:
+
 - limit
 - offset
 ```
@@ -52,6 +53,7 @@ Query:
 
 ```markdown
 Headers:
+
 - X-Client-Id
 ```
 
@@ -61,6 +63,7 @@ Body MUST be expressed as a JSON code block.
 
 ````markdown
 Body:
+
 ```json
 {
   "name": "example-resource"
@@ -79,13 +82,14 @@ Rules:
 
 ```markdown
 Response:
+
 - 200 OK
 ```
 
 Rules:
 
-* List of status codes
-* Body is optional and not strictly defined
+- List of status codes
+- Body is optional and not strictly defined
 
 ## Endpoint Overrides
 
@@ -107,12 +111,12 @@ Enable simple HTTP execution from API.md without requiring full specifications.
 
 From each endpoint, extract:
 
-* method (GET, POST, etc.)
-* path
-* query params (optional)
-* headers (optional)
-* body (JSON block, optional)
-* auth requirement (Required / None)
+- method (GET, POST, etc.)
+- path
+- query params (optional)
+- headers (optional)
+- body (JSON block, optional)
+- auth requirement (Required / None)
 
 ## Execution Behavior
 
@@ -136,9 +140,9 @@ Maps directly to HTTP headers.
 
 ### Body Handling
 
-* Use JSON block as-is
-* No transformation
-* No validation
+- Use JSON block as-is
+- No transformation
+- No validation
 
 ## Philosophy
 
