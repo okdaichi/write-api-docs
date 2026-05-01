@@ -42,10 +42,24 @@ write down:
 - [API.md](API.md) - A canonical example of the convention.
 - [CONVENTION.md](CONVENTION.md) - The detailed format specification and execution model.
 
+## SDK Usage
+
+You can use the API.md parser and generator in your own Deno scripts:
+
+```ts
+import { parseApiMd, stringifyApiMd } from "https://deno.land/x/api_md/mod.ts";
+```
+
 ## Optional Tooling
 
 This repository includes a small Deno TypeScript generator that can create starter test code from
 API.md.
+
+```sh
+deno run --allow-read --allow-write cli.ts API.md generated/api.test.ts
+```
+
+Or use the task:
 
 ```sh
 deno task generate:tests

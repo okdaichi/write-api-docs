@@ -1,4 +1,4 @@
-import { generateDenoTests, parseApiMd } from "./api-md.ts";
+import { generateDenoTests, parseApiMd, stringifyApiMd } from "../mod.ts";
 
 function assertEquals(actual: unknown, expected: unknown): void {
   const a = JSON.stringify(actual, Object.keys(actual as any).sort());
@@ -99,4 +99,25 @@ Deno.test("generateDenoTests excludes Authorization if Auth: None", () => {
     const deleteEndpoint = endpoints.find(e => e.method === "DELETE");
     const output = generateDenoTests([deleteEndpoint!]);
     assertEquals(output.includes('Authorization'), false);
+});
+
+Deno.test("stringifyApiMd generates valid markdown", () => {
+  const endpoints: any[] = [
+    {
+      method: "GET",
+      path: "/test",
+      description: "Test endpoint",
+      auth: "None",
+      query: ["param1"],
+      headers: [],
+      response: ["200 OK"]
+    }
+  ];
+  
+  const output = stringifyApiMd(endpoints, "Required");
+  
+  assertEquals(output.includes("### GET /test"), true);
+  assertEquals(output.includes("Description: Test endpoint"), true);
+  assertEquals(output.includes("Auth: None"), true);
+  assertEquals(output.includes("- param1"), true);
 });

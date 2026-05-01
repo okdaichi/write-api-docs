@@ -1,4 +1,4 @@
-import { type ApiExamples, generateDenoTests, parseApiMd } from "./api-md.ts";
+import { type ApiExamples, generateDenoTests, parseApiMd } from "./mod.ts";
 
 type CliOptions = {
   inputPath: string;

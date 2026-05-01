@@ -28,6 +28,9 @@ type EndpointListField = "query" | "headers" | "response";
 const endpointHeading = /^###\s+(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s+(\S+)\s*$/;
 const fieldHeading = /^(Description|Query|Headers|Body|Response|Auth):\s*(.*)$/;
 
+/**
+ * Parses API.md content into an array of ApiEndpoint objects.
+ */
 export function parseApiMd(markdown: string): ApiEndpoint[] {
   const endpoints: ApiEndpoint[] = [];
   let current: ApiEndpoint | undefined;
@@ -125,6 +128,68 @@ export function parseApiMd(markdown: string): ApiEndpoint[] {
   return endpoints;
 }
 
+/**
+ * Converts an array of ApiEndpoint objects back into the API.md Markdown format.
+ */
+export function stringifyApiMd(endpoints: ApiEndpoint[], globalAuth: "Required" | "None" = "Required"): string {
+  const lines: string[] = ["# API", ""];
+
+  if (globalAuth !== "Required") {
+    lines.push(`Auth: ${globalAuth}`, "");
+  }
+
+  lines.push("## Endpoints", "");
+
+  for (const endpoint of endpoints) {
+    lines.push(`### ${endpoint.method} ${endpoint.path}`, "");
+
+    if (endpoint.description) {
+      lines.push(`Description: ${endpoint.description}`, "");
+    }
+
+    if (endpoint.auth !== globalAuth) {
+      lines.push(`Auth: ${endpoint.auth}`, "");
+    }
+
+    if (endpoint.query.length > 0) {
+      lines.push("Query:");
+      for (const q of endpoint.query) {
+        lines.push(`- ${q}`);
+      }
+      lines.push("");
+    }
+
+    if (endpoint.headers.length > 0) {
+      lines.push("Headers:");
+      for (const h of endpoint.headers) {
+        lines.push(`- ${h}`);
+      }
+      lines.push("");
+    }
+
+    if (endpoint.body) {
+      lines.push("Body:");
+      lines.push("```json");
+      lines.push(endpoint.body.trim());
+      lines.push("```");
+      lines.push("");
+    }
+
+    if (endpoint.response.length > 0) {
+      lines.push("Response:");
+      for (const r of endpoint.response) {
+        lines.push(`- ${r}`);
+      }
+      lines.push("");
+    }
+  }
+
+  return lines.join("\n");
+}
+
+/**
+ * Generates Deno test code from an array of ApiEndpoint objects.
+ */
 export function generateDenoTests(
   endpoints: ApiEndpoint[],
   examples: ApiExamples = {},
@@ -244,4 +309,3 @@ function exampleValue(
 function jsonValue(value: unknown): string {
   return JSON.stringify(value);
 }
-
