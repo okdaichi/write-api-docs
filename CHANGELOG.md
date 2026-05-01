@@ -12,11 +12,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Removed
 
-## [0.1.0] - 2026-05-01
+## [v0.1.0] - 2026-05-01
 
 ### Added
 
 - Initial API.md convention draft.
-- Example API.md document with multiple endpoints.
-- README explaining the problem, solution, philosophy, use cases, and non-goals.
+- Canonical API.md example with general item endpoints.
+- README explaining the problem, solution, philosophy, use cases, non-goals, and project status.
 - Contribution guidelines and lightweight governance.
+- MIT license and code of conduct.
+- Lightweight GitHub Actions for CI, Markdown linting, link checking, and GitHub Pages publishing.
