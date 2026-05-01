@@ -2,7 +2,8 @@
 
 Thanks for helping improve the API.md Convention.
 
-This project is specification-first, not tool-first. Changes should make the convention clearer, easier to adopt, or easier to explain.
+This project is specification-first, not tool-first. Changes should make the convention clearer,
+easier to adopt, or easier to explain.
 
 ## Ways to Contribute
 
@@ -17,7 +18,8 @@ This project is specification-first, not tool-first. Changes should make the con
 
 The most important contribution rule is: keep it simple.
 
-API.md should remain easy to write by hand, easy to review in a pull request, and useful without special tools.
+API.md should remain easy to write by hand, easy to review in a pull request, and useful without
+special tools.
 
 Before adding a new rule, section, keyword, or convention, ask:
 
@@ -53,9 +55,11 @@ Please avoid:
 
 Maintainers review issues and pull requests.
 
-Changes should prioritize simplicity, readability, and low adoption cost. Backward compatibility is preferred, but it is not strict while the convention is in its early experimental stage.
+Changes should prioritize simplicity, readability, and low adoption cost. Backward compatibility is
+preferred, but it is not strict while the convention is in its early experimental stage.
 
-If a change would make the convention more complex, maintainers may ask for a smaller proposal, more examples, or real-world evidence that the complexity is worth it.
+If a change would make the convention more complex, maintainers may ask for a smaller proposal, more
+examples, or real-world evidence that the complexity is worth it.
 
 ## Pull Request Checklist
 

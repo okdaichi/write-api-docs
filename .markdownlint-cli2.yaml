@@ -2,5 +2,9 @@ config:
   default: true
   MD013: false
   MD026: false
+  MD031: false # Blanks around fences - allow compact style
+  MD032: false # Blanks around lists - allow compact style
+  MD004:
+    style: "dash"
   MD024:
     siblings_only: true

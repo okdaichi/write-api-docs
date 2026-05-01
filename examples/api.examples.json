@@ -1,0 +1,9 @@
+{
+  "params": {
+    "item_id": "item_override"
+  },
+  "request": {
+    "name": "Override item",
+    "description": "Optional override values for generated tests"
+  }
+}
