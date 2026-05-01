@@ -101,13 +101,13 @@ Endpoint-level fields override global fields:
 Auth: None
 ```
 
-# Test Generation / Execution Model
+## Test Generation / Execution Model
 
-## Goal
+### Goal
 
 Enable simple HTTP execution from API.md without requiring full specifications.
 
-## Extraction Rules
+### Extraction Rules
 
 From each endpoint, extract:
 
@@ -118,32 +118,32 @@ From each endpoint, extract:
 - body (JSON block, optional)
 - auth requirement (Required / None)
 
-## Execution Behavior
+### Execution Behavior
 
-### Base Request
+#### Base Request
 
 ```text
 METHOD {BaseURL}{BasePath}{Path}
 ```
 
-### Auth Handling
+#### Auth Handling
 
 If `Auth: Required`, then `Authorization: $TOKEN`. Token is injected externally.
 
-### Query Handling
+#### Query Handling
 
 Values provided at runtime or defaulted.
 
-### Headers Handling
+#### Headers Handling
 
 Maps directly to HTTP headers.
 
-### Body Handling
+#### Body Handling
 
 - Use JSON block as-is
 - No transformation
 - No validation
 
-## Philosophy
+### Philosophy
 
 API.md provides structure and minimal execution hints. Tools provide values and runtime behavior.

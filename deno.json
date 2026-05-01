@@ -1,9 +1,9 @@
 {
   "tasks": {
-    "check": "deno fmt --check && deno lint && deno test",
+    "check": "deno fmt --check && deno lint && deno test src",
     "fmt": "deno fmt",
     "generate:tests": "deno run --allow-read --allow-write cli.ts API.md generated/api.test.ts",
-    "test": "deno test"
+    "test": "deno test src"
   },
   "fmt": {
     "lineWidth": 100,

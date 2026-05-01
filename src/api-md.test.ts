@@ -1,12 +1,10 @@
-import { generateDenoTests, parseApiMd, stringifyApiMd } from "../mod.ts";
+import { type ApiEndpoint, generateDenoTests, parseApiMd, stringifyApiMd } from "../mod.ts";
 
 function assertEquals(actual: unknown, expected: unknown): void {
-  const a = JSON.stringify(actual, Object.keys(actual as any).sort());
-  const e = JSON.stringify(expected, Object.keys(expected as any).sort());
+  const a = JSON.stringify(actual, Object.keys(actual as Record<string, unknown>).sort());
+  const e = JSON.stringify(expected, Object.keys(expected as Record<string, unknown>).sort());
   if (a !== e) {
-    throw new Error(
-      `Expected ${e}, got ${a}`,
-    );
+    throw new Error(`Expected ${e}, got ${a}`);
   }
 }
 
@@ -107,7 +105,7 @@ Deno.test("generateDenoTests excludes Authorization if Auth: None", () => {
 });
 
 Deno.test("stringifyApiMd generates valid markdown", () => {
-  const endpoints: any[] = [
+  const endpoints: ApiEndpoint[] = [
     {
       method: "GET",
       path: "/test",
